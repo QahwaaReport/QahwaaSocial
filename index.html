@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Qahwaa Social And Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+        img {
+            width: 30px;
+            height: 30px;
+        }
+        .rating-container {
+            margin-top: 20px;
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .star {
+            font-size: 30px;
+            color: gray;
+            transition: 0.3s;
+        }
+        .star.selected {
+            color: gold;
+        }
+        .comment-container {
+            display: none;
+            margin-top: 20px;
+        }
+        textarea, button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 80%;
+        }
+    </style>
+    <script>
+        function rate(stars) {
+            let starElements = document.querySelectorAll(".star");
+            starElements.forEach((star, index) => {
+                if (index < stars) {
+                    star.classList.add("selected");
+                } else {
+                    star.classList.remove("selected");
+                }
+            });
+            document.getElementById("commentBox").style.display = "block";
+            document.getElementById("selectedRating").value = stars;
+        }
+
+        function sendToTelegram() {
+            const rating = document.getElementById("selectedRating").value;
+            const comment = document.getElementById("comment").value;
+            const botToken = "7927556979:AAFReVniKOBsp_bdesl6VOOqyfRL_o5PTN4";
+            const chatId = "-1002693065728";
+            const message = `تقييم جديد لـ Qahwaa_clothes:\n⭐ التقييم: ${rating} نجوم\n💬 التعليق: ${comment}`;
+            
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
+                .then(response => alert("تم إرسال التقييم بنجاح!"))
+                .catch(error => alert("حدث خطأ أثناء الإرسال."));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>مرحبا بكم في قهوة | Qahwaa Clothes</h1>
+        <p>تابعونا على وسائل التواصل الاجتماعي</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/Qahwaa_clothes" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+            </a>
+            <a href="https://www.facebook.com/share/1EdC6Sd5dj/" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+            </a>
+            <a href="https://www.tiktok.com/@qahwa_clothes?_t=ZS-8ujxJvlGE9S&_r=1" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046122.png" alt="TikTok">
+            </a>
+            <a href="https://qahwaa.github.io/Qahwaa/index.html" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Website">
+            </a>
+        </div>
+
+        <div class="rating-container">
+            <p>Rate Us</p>
+            <div class="stars">
+                <span class="star" onclick="rate(1)">★</span>
+                <span class="star" onclick="rate(2)">★</span>
+                <span class="star" onclick="rate(3)">★</span>
+                <span class="star" onclick="rate(4)">★</span>
+                <span class="star" onclick="rate(5)">★</span>
+            </div>
+            <input type="hidden" id="selectedRating" value="0">
+        </div>
+
+        <div class="comment-container" id="commentBox">
+            <textarea id="comment" placeholder="Put your comment here..."></textarea>
+            <button onclick="sendToTelegram()">send</button>
+        </div>
+    </div>
+</body>
+</html>
